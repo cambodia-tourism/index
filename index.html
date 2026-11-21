@@ -45,6 +45,8 @@
         <!-- Category Filters -->
         <div class="flex flex-wrap gap-2 mb-6 justify-center">
             <button onclick="filterCategory('ALL', this)" class="cat-btn bg-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-sm transition">ទាំងអស់</button>
+            <button onclick="filterCategory('សាលារៀន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏡 សាលារៀន</button>
+            <button onclick="filterCategory('លំនៅដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏠 លំនៅដ្ឋាន</button>
             <button onclick="filterCategory('រមណីយដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏝️ រមណីយដ្ឋាន</button>
             <button onclick="filterCategory('ប្រាសាទបុរាណ', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏛️ ប្រាសាទបុរាណ</button>
             <button onclick="filterCategory('កន្លែងកម្សាន្ត', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🎡 កន្លែងកម្សាន្ត</button>
@@ -119,10 +121,12 @@
                     <div>
                         <label class="block text-sm font-semibold mb-1">ប្រភេទ *</label>
                         <select id="formCategory" required class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            <option value="សាលារៀន">សាលារៀន</option>
                             <option value="រមណីយដ្ឋាន">រមណីយដ្ឋាន</option>
                             <option value="ប្រាសាទបុរាណ">ប្រាសាទបុរាណ</option>
                             <option value="កន្លែងកម្សាន្ត">កន្លែងកម្សាន្ត</option>
                             <option value="ភោជនីយដ្ឋាន">ភោជនីយដ្ឋាន</option>
+                            <option value="លំនៅដ្ឋាន">លំនៅដ្ឋាន</option>
                         </select>
                     </div>
                     <div>
