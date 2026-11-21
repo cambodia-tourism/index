@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ដើរលេងកម្ពុជា - ស្វែងរករមណីយដ្ឋាន ប្រាសាទ និងភោជនីយដ្ឋាន</title>
+    <title>ដើរលេងកម្ពុជា - ស្វែងរក និងចុះឈ្មោះទីតាំង</title>
     
-    <!-- Google Fonts: Kantumruy Pro -->
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Leaflet Free Map CSS & JS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         body { font-family: 'Kantumruy Pro', sans-serif; background-color: #f8fafc; }
-        #map { height: 420px; width: 100%; border-radius: 1rem; z-index: 1; }
+        #map { height: 400px; width: 100%; border-radius: 1rem; z-index: 1; }
     </style>
 </head>
 <body class="text-slate-800">
 
     <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-2 text-2xl font-bold">
                 <i class="fa-solid fa-map-location-dot text-amber-300"></i>
-                <span>ដើរលេងកម្ពុជា (Explore KH)</span>
+                <span>ដើរលេងកម្ពុជា</span>
             </div>
-            <div class="relative w-full md:w-96">
-                <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះទីកន្លែង ឬខេត្ត..." 
-                    class="w-full pl-10 pr-4 py-2 rounded-full text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-300 shadow-inner">
-                <i class="fa-solid fa-search absolute left-3.5 top-3 text-slate-400"></i>
+
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <div class="relative w-full sm:w-72">
+                    <input type="text" id="searchInput" placeholder="ស្វែងរកឈ្មោះទីកន្លែង ឬខេត្ត..." 
+                        class="w-full pl-10 pr-4 py-2 rounded-full text-slate-800 focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm">
+                    <i class="fa-solid fa-search absolute left-3.5 top-2.5 text-slate-400"></i>
+                </div>
+                <button onclick="openAddModal()" class="w-full sm:w-auto bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-4 py-2 rounded-full shadow transition flex items-center justify-center gap-2 text-sm whitespace-nowrap">
+                    <i class="fa-solid fa-plus-circle"></i> ចុះឈ្មោះទីតាំង
+                </button>
             </div>
         </div>
     </nav>
@@ -44,12 +43,12 @@
     <div class="max-w-7xl mx-auto px-4 py-6">
         
         <!-- Category Filters -->
-        <div class="flex flex-wrap gap-2 mb-6 justify-center" id="categoryButtons">
-            <button onclick="filterCategory('ALL')" class="cat-btn active bg-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-sm transition">ទាំងអស់</button>
-            <button onclick="filterCategory('រមណីយដ្ឋាន')" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏝️ រមណីយដ្ឋាន</button>
-            <button onclick="filterCategory('ប្រាសាទបុរាណ')" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏛️ ប្រាសាទបុរាណ</button>
-            <button onclick="filterCategory('កន្លែងកម្សាន្ត')" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🎡 កន្លែងកម្សាន្ត</button>
-            <button onclick="filterCategory('ភោជនីយដ្ឋាន')" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🍽️ ភោជនីយដ្ឋាន</button>
+        <div class="flex flex-wrap gap-2 mb-6 justify-center">
+            <button onclick="filterCategory('ALL', this)" class="cat-btn bg-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-sm transition">ទាំងអស់</button>
+            <button onclick="filterCategory('រមណីយដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏝️ រមណីយដ្ឋាន</button>
+            <button onclick="filterCategory('ប្រាសាទបុរាណ', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏛️ ប្រាសាទបុរាណ</button>
+            <button onclick="filterCategory('កន្លែងកម្សាន្ត', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🎡 កន្លែងកម្សាន្ត</button>
+            <button onclick="filterCategory('ភោជនីយដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🍽️ ភោជនីយដ្ឋាន</button>
         </div>
 
         <!-- Interactive Map Section -->
@@ -71,12 +70,12 @@
         <div id="placesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 
-    <!-- Modal Details -->
+    <!-- Modal ព័ត៌មានលម្អិត -->
     <div id="detailModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl animate-fade-in">
+        <div class="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl">
             <div class="relative">
                 <img id="modalImg" src="" alt="" class="w-full h-60 object-cover">
-                <button onclick="closeModal()" class="absolute top-3 right-3 bg-black/50 text-white w-9 h-9 rounded-full hover:bg-black transition">
+                <button onclick="closeDetailModal()" class="absolute top-3 right-3 bg-black/50 text-white w-9 h-9 rounded-full hover:bg-black transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
                 <span id="modalCategory" class="absolute bottom-3 left-3 bg-teal-600 text-white text-xs px-3 py-1 rounded-full font-semibold"></span>
@@ -100,29 +99,97 @@
         </div>
     </div>
 
+    <!-- Modal Form ចុះឈ្មោះទីតាំងថ្មី -->
+    <div id="addPlaceModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50 p-4 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl my-8">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-teal-700"><i class="fa-solid fa-store mr-2"></i>ចុះឈ្មោះទីតាំង ឬសេវាកម្មថ្មី</h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-slate-700 text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="addPlaceForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold mb-1">ឈ្មោះទីកន្លែង *</label>
+                    <input type="text" id="formName" required placeholder="ឧទាហរណ៍៖ ភោជនីយដ្ឋាន មាត់ទន្លេ" class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">ប្រភេទ *</label>
+                        <select id="formCategory" required class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                            <option value="រមណីយដ្ឋាន">រមណីយដ្ឋាន</option>
+                            <option value="ប្រាសាទបុរាណ">ប្រាសាទបុរាណ</option>
+                            <option value="កន្លែងកម្សាន្ត">កន្លែងកម្សាន្ត</option>
+                            <option value="ភោជនីយដ្ឋាន">ភោជនីយដ្ឋាន</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">រាជធានី / ខេត្ត *</label>
+                        <input type="text" id="formProvince" required placeholder="ឧទាហរណ៍៖ សៀមរាប" class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">លេខទូរស័ព្ទទំនាក់ទំនង</label>
+                        <input type="text" id="formPhone" placeholder="ឧទាហរណ៍៖ 012 345 678" class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Link រូបភាព (URL)</label>
+                        <input type="url" id="formImage" placeholder="https://..." class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Latitude (រយៈទទឹង) *</label>
+                        <input type="number" step="any" id="formLat" required placeholder="13.4125" class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-1">Longitude (រយៈបណ្តោយ) *</label>
+                        <input type="number" step="any" id="formLng" required placeholder="103.8670" class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    </div>
+                </div>
+                <p class="text-xs text-slate-500">💡 គន្លឹះ៖ ចូល Google Maps ហើយចុច Right-click លើទីតាំង ដើម្បី Copy លេខ Lat, Lng។</p>
+
+                <div>
+                    <label class="block text-sm font-semibold mb-1">ព័ត៌មានពិពណ៌នា *</label>
+                    <textarea id="formDesc" rows="3" required placeholder="រៀបរាប់ពីសេវាកម្ម បរិយាកាស ឬម៉ោងបើក..." class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+                </div>
+
+                <div id="formStatus" class="text-sm font-semibold hidden"></div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl border text-slate-600 hover:bg-slate-50 text-sm font-semibold">បោះបង់</button>
+                    <button type="submit" id="submitBtn" class="px-6 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold shadow flex items-center gap-2">
+                        <i class="fa-solid fa-paper-plane"></i> បញ្ជូនទិន្នន័យ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-slate-800 text-slate-300 text-center py-6 mt-12">
-        <p>© 2026 ដើរលេងកម្ពុជា - បង្កើតឡើងដោយប្រើ Google Sheets + Apps Script + GitHub</p>
+        <p>© 2026 ដើរលេងកម្ពុជា - Google Sheets + Apps Script + GitHub</p>
     </footer>
 
     <script>
-        // ==========================================
-        // ដាក់ WEB APP URL របស់អ្នកនៅត្រង់នេះ!
-        const API_URL = "https://script.google.com/macros/s/AKfycbwXbTeBnsYVS1HmBir4q84q0q5mu_ewXLPGwz5cpwqPZqEPtKNCd31-AG9thT_XMsjrzw/exec"; 
-        // ==========================================
+        // ដាក់ WEB APP URL របស់អ្នកនៅត្រង់នេះ
+        const API_URL = "https://script.google.com/macros/s/AKfycbx.../exec";
 
         let allPlaces = [];
         let currentCategory = 'ALL';
         let markersLayer = L.layerGroup();
 
-        // កំណត់ផែនទីដើមនៅប្រទេសកម្ពុជា
         const map = L.map('map').setView([12.5657, 104.9910], 7);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
         markersLayer.addTo(map);
 
-        // ទាញទិន្នន័យពី Google Apps Script
         async function fetchPlaces() {
             try {
                 const response = await fetch(API_URL);
@@ -130,12 +197,11 @@
                 document.getElementById('loader').style.display = 'none';
                 renderData(allPlaces);
             } catch (error) {
-                document.getElementById('loader').innerHTML = `<p class="text-red-500 font-bold">មានបញ្ហាក្នុងការទាញទិន្នន័យ! សូមពិនិត្យមើល API_URL របស់អ្នកឡើងវិញ។</p>`;
+                document.getElementById('loader').innerHTML = `<p class="text-red-500 font-bold">មានបញ្ហាក្នុងការទាញទិន្នន័យ!</p>`;
                 console.error(error);
             }
         }
 
-        // បង្ហាញ Card និង Pin លើផែនទី
         function renderData(places) {
             const grid = document.getElementById('placesGrid');
             grid.innerHTML = '';
@@ -149,34 +215,33 @@
             places.forEach(place => {
                 const imgUrl = place.image || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
                 const hasPhone = place.phone && place.phone.toString().trim() !== '' && place.phone !== 'N/A';
-                
-                // បង្កើត Card
+                const safePlace = JSON.stringify(place).replace(/'/g, "&#39;");
+
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 overflow-hidden border border-slate-100 flex flex-col justify-between";
                 card.innerHTML = `
                     <div>
-                        <div class="relative h-48 overflow-hidden cursor-pointer" onclick='openModal(${JSON.stringify(place).replace(/'/g, "&#39;")})'>
+                        <div class="relative h-48 overflow-hidden cursor-pointer" onclick='openDetailModal(${safePlace})'>
                             <img src="${imgUrl}" alt="${place.name}" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-                            <span class="absolute top-3 left-3 bg-teal-600/90 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full font-semibold">${place.category}</span>
+                            <span class="absolute top-3 left-3 bg-teal-600/90 text-white text-xs px-3 py-1 rounded-full font-semibold">${place.category}</span>
                             <span class="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-lg"><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i>${place.province}</span>
                         </div>
                         <div class="p-5">
                             <h3 class="text-xl font-bold text-slate-800 mb-2 line-clamp-1">${place.name}</h3>
-                            <p class="text-slate-600 text-sm line-clamp-2 mb-4">${place.description}</p>
+                            <p class="text-slate-600 text-sm line-clamp-2">${place.description}</p>
                         </div>
                     </div>
                     <div class="px-5 pb-5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                         <button onclick="focusOnMap(${place.lat}, ${place.lng})" class="text-teal-600 hover:bg-teal-50 px-3 py-1.5 rounded-lg text-sm font-semibold transition">
                             <i class="fa-solid fa-map-pin mr-1"></i> មើលលើផែនទី
                         </button>
-                        <button onclick='openModal(${JSON.stringify(place).replace(/'/g, "&#39;")})' class="bg-slate-800 hover:bg-teal-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition">
+                        <button onclick='openDetailModal(${safePlace})' class="bg-slate-800 hover:bg-teal-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold transition">
                             ព័ត៌មានលម្អិត
                         </button>
                     </div>
                 `;
                 grid.appendChild(card);
 
-                // បន្ថែម Pin លើផែនទី
                 if (place.lat && place.lng) {
                     const marker = L.marker([parseFloat(place.lat), parseFloat(place.lng)]);
                     marker.bindPopup(`
@@ -192,34 +257,31 @@
             });
         }
 
-        // មុខងារច្រោះតាមប្រភេទ (Filter)
-        function filterCategory(category) {
+        function filterCategory(category, btnEl) {
             currentCategory = category;
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.classList.remove('bg-teal-600', 'text-white');
                 btn.classList.add('bg-white', 'text-slate-700');
             });
-            event.target.classList.remove('bg-white', 'text-slate-700');
-            event.target.classList.add('bg-teal-600', 'text-white');
+            btnEl.classList.remove('bg-white', 'text-slate-700');
+            btnEl.classList.add('bg-teal-600', 'text-white');
             applyFilters();
         }
 
-        // មុខងារស្វែងរក (Search)
         document.getElementById('searchInput').addEventListener('input', applyFilters);
 
         function applyFilters() {
             const keyword = document.getElementById('searchInput').value.toLowerCase();
             const filtered = allPlaces.filter(place => {
                 const matchCat = currentCategory === 'ALL' || place.category === currentCategory;
-                const matchSearch = place.name.toLowerCase().includes(keyword) || 
-                                    place.province.toLowerCase().includes(keyword) ||
-                                    place.description.toLowerCase().includes(keyword);
+                const matchSearch = (place.name || '').toLowerCase().includes(keyword) || 
+                                    (place.province || '').toLowerCase().includes(keyword) ||
+                                    (place.description || '').toLowerCase().includes(keyword);
                 return matchCat && matchSearch;
             });
             renderData(filtered);
         }
 
-        // Zoom ផែនទីទៅកាន់ទីតាំងដែលចុច
         function focusOnMap(lat, lng) {
             if (!lat || !lng) return alert("ទីតាំងនេះមិនទាន់មានកូអរដោនេនៅឡើយទេ!");
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -230,8 +292,7 @@
             map.flyTo([12.5657, 104.9910], 7);
         }
 
-        // បើកផ្ទាំងព័ត៌មានលម្អិត (Modal)
-        function openModal(place) {
+        function openDetailModal(place) {
             document.getElementById('modalImg').src = place.image || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80';
             document.getElementById('modalCategory').innerText = place.category;
             document.getElementById('modalTitle').innerText = place.name;
@@ -244,7 +305,7 @@
                 callBtn.href = `tel:${place.phone}`;
                 document.getElementById('modalPhoneText').innerText = place.phone;
             } else {
-                callBtn.style.display = 'none'; // លាក់ប៊ូតុងទូរស័ព្ទបើជាប្រាសាទបុរាណដែលគ្មានលេខ
+                callBtn.style.display = 'none';
             }
 
             document.getElementById('modalMapBtn').href = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
@@ -254,13 +315,75 @@
             modal.classList.add('flex');
         }
 
-        function closeModal() {
+        function closeDetailModal() {
             const modal = document.getElementById('detailModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
         }
 
-        // ចាប់ផ្តើមដំណើរការ
+        // បើក/បិទ Form ចុះឈ្មោះទីតាំង
+        function openAddModal() {
+            const modal = document.getElementById('addPlaceModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('addPlaceModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('formStatus').classList.add('hidden');
+        }
+
+        // បញ្ជូនទិន្នន័យពី Form ទៅ Google Apps Script
+        document.getElementById('addPlaceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const statusEl = document.getElementById('formStatus');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> កំពុងរក្សាទុក...`;
+
+            const payload = {
+                name: document.getElementById('formName').value.trim(),
+                category: document.getElementById('formCategory').value,
+                province: document.getElementById('formProvince').value.trim(),
+                phone: document.getElementById('formPhone').value.trim() || "N/A",
+                image: document.getElementById('formImage').value.trim(),
+                lat: document.getElementById('formLat').value.trim(),
+                lng: document.getElementById('formLng').value.trim(),
+                description: document.getElementById('formDesc').value.trim()
+            };
+
+            try {
+                // ប្រើ mode: 'no-cors' ដើម្បីបញ្ជូនទៅ Google Apps Script ដោយគ្មានបញ្ហា CORS
+                await fetch(API_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                statusEl.className = "text-sm font-semibold text-emerald-600 block";
+                statusEl.innerText = "✅ បានរក្សាទុកទីតាំងជោគជ័យ! កំពុងធ្វើបច្ចុប្បន្នភាព...";
+                document.getElementById('addPlaceForm').reset();
+
+                // រង់ចាំ ១.៥ វិនាទី រួចទាញទិន្នន័យថ្មីមកបង្ហាញភ្លាម
+                setTimeout(() => {
+                    fetchPlaces();
+                    closeAddModal();
+                }, 1500);
+
+            } catch (err) {
+                statusEl.className = "text-sm font-semibold text-red-600 block";
+                statusEl.innerText = "❌ មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ!";
+                console.error(err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> បញ្ជូនទិន្នន័យ`;
+            }
+        });
+
         fetchPlaces();
     </script>
 </body>
