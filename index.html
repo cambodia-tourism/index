@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ដើរលេងកម្ពុជា</title>
+    <title>ដើរលេងកម្ពុជា - ស្វែងរក និងចុះឈ្មោះទីតាំង</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,8 +45,6 @@
         <!-- Category Filters -->
         <div class="flex flex-wrap gap-2 mb-6 justify-center">
             <button onclick="filterCategory('ALL', this)" class="cat-btn bg-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-sm transition">ទាំងអស់</button>
-            <button onclick="filterCategory('សាលារៀន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏡 សាលារៀន</button>
-            <button onclick="filterCategory('លំនៅដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏠 លំនៅដ្ឋាន</button>
             <button onclick="filterCategory('រមណីយដ្ឋាន', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏝️ រមណីយដ្ឋាន</button>
             <button onclick="filterCategory('ប្រាសាទបុរាណ', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🏛️ ប្រាសាទបុរាណ</button>
             <button onclick="filterCategory('កន្លែងកម្សាន្ត', this)" class="cat-btn bg-white text-slate-700 hover:bg-teal-50 px-4 py-2 rounded-full font-semibold shadow-sm border transition">🎡 កន្លែងកម្សាន្ត</button>
@@ -121,12 +119,10 @@
                     <div>
                         <label class="block text-sm font-semibold mb-1">ប្រភេទ *</label>
                         <select id="formCategory" required class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                            <option value="សាលារៀន">សាលារៀន</option>
                             <option value="រមណីយដ្ឋាន">រមណីយដ្ឋាន</option>
                             <option value="ប្រាសាទបុរាណ">ប្រាសាទបុរាណ</option>
                             <option value="កន្លែងកម្សាន្ត">កន្លែងកម្សាន្ត</option>
                             <option value="ភោជនីយដ្ឋាន">ភោជនីយដ្ឋាន</option>
-                            <option value="លំនៅដ្ឋាន">លំនៅដ្ឋាន</option>
                         </select>
                     </div>
                     <div>
@@ -163,10 +159,11 @@
                     <textarea id="formDesc" rows="3" required placeholder="រៀបរាប់ពីសេវាកម្ម បរិយាកាស ឬម៉ោងបើក..." class="w-full border rounded-xl px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
                 </div>
 
-                <div id="formStatus" class="text-sm font-semibold hidden"></div>
+                <!-- ប្រអប់បង្ហាញស្ថានភាពបញ្ជូន -->
+                <div id="formStatus" class="p-3 rounded-xl text-sm font-semibold hidden"></div>
 
                 <div class="flex justify-end gap-3 pt-2">
-                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl border text-slate-600 hover:bg-slate-50 text-sm font-semibold">បោះបង់</button>
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 rounded-xl border text-slate-600 hover:bg-slate-50 text-sm font-semibold">បិទ</button>
                     <button type="submit" id="submitBtn" class="px-6 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-sm font-bold shadow flex items-center gap-2">
                         <i class="fa-solid fa-paper-plane"></i> បញ្ជូនទិន្នន័យ
                     </button>
@@ -182,7 +179,7 @@
 
     <script>
         // ដាក់ WEB APP URL របស់អ្នកនៅត្រង់នេះ
-        const API_URL = "https://script.google.com/macros/s/AKfycby-tqNm8fq9M44y4WbZeUe5-AznkTazMfgKRKaV2z1TVnWz18ZcZN3J0BvSL-f2jarIUQ/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbwj8rWwCox-0WYD1I7Y8-s8zc512tZqmwI08xSkmdNQPBU1iogyF0UXrMMi3lvbnXcihA/exec";
 
         let allPlaces = [];
         let currentCategory = 'ALL';
@@ -325,7 +322,6 @@
             modal.classList.remove('flex');
         }
 
-        // បើក/បិទ Form ចុះឈ្មោះទីតាំង
         function openAddModal() {
             const modal = document.getElementById('addPlaceModal');
             modal.classList.remove('hidden');
@@ -339,14 +335,14 @@
             document.getElementById('formStatus').classList.add('hidden');
         }
 
-        // បញ្ជូនទិន្នន័យពី Form ទៅ Google Apps Script
+        // បញ្ជូនទិន្នន័យពី Form ទៅ Google Apps Script (ជា Pending)
         document.getElementById('addPlaceForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('submitBtn');
             const statusEl = document.getElementById('formStatus');
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> កំពុងរក្សាទុក...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> កំពុងបញ្ជូន...`;
 
             const payload = {
                 name: document.getElementById('formName').value.trim(),
@@ -360,7 +356,6 @@
             };
 
             try {
-                // ប្រើ mode: 'no-cors' ដើម្បីបញ្ជូនទៅ Google Apps Script ដោយគ្មានបញ្ហា CORS
                 await fetch(API_URL, {
                     method: "POST",
                     mode: "no-cors",
@@ -368,19 +363,18 @@
                     body: JSON.stringify(payload)
                 });
 
-                statusEl.className = "text-sm font-semibold text-emerald-600 block";
-                statusEl.innerText = "✅ បានរក្សាទុកទីតាំងជោគជ័យ! កំពុងធ្វើបច្ចុប្បន្នភាព...";
+                statusEl.className = "p-3 rounded-xl text-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200 block";
+                statusEl.innerHTML = `<i class="fa-solid fa-clock mr-1"></i> <b>បានបញ្ជូនជោគជ័យ!</b> ទិន្នន័យរបស់អ្នកកំពុងរង់ចាំការត្រួតពិនិត្យ (Pending) ពីក្រុមការងារ មុននឹងបង្ហាញជាសាធារណៈ។`;
                 document.getElementById('addPlaceForm').reset();
 
-                // រង់ចាំ ១.៥ វិនាទី រួចទាញទិន្នន័យថ្មីមកបង្ហាញភ្លាម
+                // បិទ Modal ដោយស្វ័យប្រវត្តិក្រោយ ៣.៥ វិនាទី
                 setTimeout(() => {
-                    fetchPlaces();
                     closeAddModal();
-                }, 1500);
+                }, 3500);
 
             } catch (err) {
-                statusEl.className = "text-sm font-semibold text-red-600 block";
-                statusEl.innerText = "❌ មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ!";
+                statusEl.className = "p-3 rounded-xl text-sm font-semibold bg-red-50 text-red-700 border border-red-200 block";
+                statusEl.innerText = "❌ មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ! សូមព្យាយាមម្តងទៀត។";
                 console.error(err);
             } finally {
                 submitBtn.disabled = false;
